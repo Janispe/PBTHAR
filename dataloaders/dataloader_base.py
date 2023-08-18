@@ -223,15 +223,32 @@ class BASE_DATA():
                     all_vali_keys.extend(self.sub_ids_of_each_sub[sub])
             else:
                 all_vali_keys = self.vali_keys.copy()
+                
+            all_train_keys = []
+                        
+            if self.split_tag == "sub":
+                for sub in self.vali_keys:
+                    all_train_keys.extend(self.sub_ids_of_each_sub[sub])
+            else:
+                all_train_keys = self.train_keys.copy()
 
 
             # -----------------test_window_index---------------------
-            test_file_name = os.path.join(self.window_save_path,
-                                          "{}_droptrans_{}_windowsize_{}_{}_test_ID_{}.pickle".format(self.data_name, 
-                                                                                                      self.drop_transition,
-                                                                                                      self.exp_mode,
-                                                                                                      self.windowsize, 
-                                                                                                      self.index_of_cv-1))
+            if self.exp_mode=="LOCV":   
+                test_file_name = os.path.join(self.window_save_path,
+                                            "{}_droptrans_{}_windowsize_{}_{}_test_ID_{}.pickle".format(self.data_name, 
+                                                                                                        self.drop_transition,
+                                                                                                        self.exp_mode,
+                                                                                                        self.windowsize, 
+                                                                                                        self.index_of_cv-1))
+            else:
+                test_file_name = os.path.join(self.window_save_path,
+                                            "{}_droptrans_{}_windowsize_{}_{}_keys_{}.pickle".format(self.data_name, 
+                                                                                                        self.drop_transition,
+                                                                                                        self.exp_mode,
+                                                                                                        self.windowsize,
+                                                                                                        ' '.join(str(k) for k in all_test_keys)))
+                
             if os.path.exists(test_file_name):
                 with open(test_file_name, 'rb') as handle:
                     self.test_window_index = pickle.load(handle)
@@ -246,26 +263,38 @@ class BASE_DATA():
 
             # -----------------train_vali_window_index---------------------
 
-            train_file_name = os.path.join(self.window_save_path,
-                                           "{}_use_vali_keys_{}_droptrans_{}_windowsize_{}_{}_train_ID_{}.pickle".format(self.use_vali_keys,
-                                                                                                                         self.data_name, 
-                                                                                                        self.drop_transition,
-                                                                                                        self.exp_mode,
-                                                                                                        self.windowsize, 
-                                                                                                        self.index_of_cv-1))
+            if self.exp_mode=="LOCV":
+                train_file_name = os.path.join(self.window_save_path,
+                                            "{}_droptrans_{}_windowsize_{}_{}_train_ID_{}.pickle".format(self.data_name, 
+                                                                                                            self.drop_transition,
+                                                                                                            self.exp_mode,
+                                                                                                            self.windowsize, 
+                                                                                                            self.index_of_cv-1))
+            else:
+                train_file_name = os.path.join(self.window_save_path,
+                                            "use_seperate_vali_keys_{}_{}_droptrans_{}_windowsize_{}_{}_train_keys_{}.pickle".format(self.use_vali_keys, 
+                                                                                                                                   self.data_name, 
+                                                                                                            self.drop_transition,
+                                                                                                            self.exp_mode,
+                                                                                                            self.windowsize, 
+                                                                                                            ' '.join(str(k) for k in all_vali_keys)))
             
-            vali_file_name = os.path.join(self.window_save_path,
-                                           "{}_droptrans_{}_windowsize_{}_{}_vali.pickle".format(self.data_name, 
+            
+            if self.use_vali_keys and self.exp_mode=='Given':
+                vali_file_name = os.path.join(self.window_save_path,
+                                           "{}_droptrans_{}_windowsize_{}_{}_vali_keys_{}.pickle".format(self.data_name, 
                                                                                                         self.drop_transition,
                                                                                                         self.exp_mode,
-                                                                                                        self.windowsize))
+                                                                                                        self.windowsize,
+                                                                                                        ' '.join(str(k) for k in all_vali_keys)))
+                
+                if os.path.exists(vali_file_name): 
+                    with open(vali_file_name, 'rb') as handle:
+                        self.vali_window_index = pickle.load(handle)
             
             if os.path.exists(train_file_name):
                 with open(train_file_name, 'rb') as handle:
                     train_vali_window_index = pickle.load(handle)
-                if self.use_vali_keys:
-                    with open(vali_file_name, 'rb') as handle:
-                        self.vali_window_index = pickle.load(handle)
             else:
                 train_vali_window_index = []
                 self.vali_window_index = []
