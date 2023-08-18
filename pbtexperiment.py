@@ -29,7 +29,7 @@ import os
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation, PillowWriter
 
-from ray.tune import Stopper
+
 from ray.air import session, Checkpoint
 
 import ray

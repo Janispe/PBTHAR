@@ -1,14 +1,7 @@
 
 from setup import create_parser
-from functionapi import train_net
 
-from dataloaders import data_set, data_dict
-
-import ray
-from ray import tune, air
-from ray.tune.schedulers import PopulationBasedTraining
-from ray.tune.schedulers.pb2 import PB2
-
+from dataloaders import  data_dict
 import numpy as np
 import yaml
 
