@@ -1,14 +1,11 @@
 
-from dataloaders import data_set,data_dict
-import torch
-import yaml
-import os
-import torch.nn as nn
+from dataloaders import data_dict
 
-import torch
-import torch.optim as optim
+import matplotlib.pyplot as plt
 
-from dataloaders import data_set,data_dict
+import pandas as pd
+
+from dataloaders import data_dict
 from models.model_builder import model_builder
 
 from pbtexperiment import _get_data, validation
@@ -29,3 +26,22 @@ def cal_test_accuracy(args, device, checkpoint_dict):
     
     test_dataloader = _get_data(args, dataset, flag = 'test', weighted_sampler = args.weighted_sampler )
     return validation(args, model, test_dataloader, device)
+
+def plot_hp_history(results, parameter):
+    fig, ax = plt.subplots()
+    ax.set_title(parameter + "  over training iterations")
+    ax.set_xlabel("training_iteration")
+    ax.set_ylabel(parameter)
+    for i in range(len(results)):
+        df = results[i].metrics_dataframe
+        ax.plot(df[parameter])
+    ax.legend()
+    
+def get_average_frame(results_grid, parameter):
+    dataframes = []
+    for rg in results_grid:
+        dataframes.append(rg.metrics_dataframe[["training_iteration", parameter]])
+
+    df = pd.concat(dataframes)
+    avg_df = df.groupby("training_iteration")
+    return avg_df.mean()
