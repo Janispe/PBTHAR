@@ -6,14 +6,16 @@ def create_parser():
     parser.add_argument('--training-iterations', dest='training_iterations', type=int, default=100, help='Number of epochs')
     parser.add_argument('--restore', dest='restore', type=bool, default=False, help="Try to Restore from folder")
     parser.add_argument('--pertubation-interval',dest='perturbation_interval', type=int, default=5, help="Pertubation Interval for Population Based Training")
-    parser.add_argument('--trails', dest='trials', type=int, default=1, help="Number of Trials for Population Based Training")
+    parser.add_argument('--trials', dest='trials', type=int, default=1, help="Number of Trials for Population Based Training")
     parser.add_argument('--scheduler', dest='scheduler', default='pbt', choices=('pbt', 'pbt2'))
     parser.add_argument('--storage-path', dest='storage_path', default='/tmp/datasets/', help='Path for Experiment results')
+    parser.add_argument('--experiment-name', dest='experiment_name', default=None, help='Path for Experiment results')
     parser.add_argument('--cpu-per-trial', dest='cpu_per_trial', default=1)
     parser.add_argument('--gpu-per-trial', dest='gpu_per_trial', default=0)
     parser.add_argument('--synch', dest='synch', default=True, help='Synch for Population Based Training, If True Trials synched')
     parser.add_argument('--quantile-fraction', dest='quantile_fraction', default=0.25, help='Bottom Trials to be exploitet')
-    
+    parser.add_argument('--trainable-api', dest='trainable_api', default='function')
+    parser.add_argument('--reuse-actor', dest='reuse_actor', default=False)
     
     #only pbt
     parser.add_argument('--resample-probability', dest='resample_probability', default=0.2, help='Propability of resampling hyperparameters instead mutating them')
