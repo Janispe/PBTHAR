@@ -1,6 +1,7 @@
 import torch
 import numpy as np
 import torch.nn as nn
+from ray.tune import Stopper
 
 class MixUpLoss(nn.Module):
     """
@@ -62,7 +63,7 @@ def mixup_data(x, y, alpha=0.4):
 
     return mixed_x, y_a_y_b_lam
 
-class EarlyStopping:
+class EarlyStopper(Stopper):
     """Early stops the training if validation loss doesn't improve after a given patience."""
     def __init__(self, patience=7, verbose=False, delta=0):
         """
@@ -73,9 +74,6 @@ class EarlyStopping:
                             Default: False
             delta (float): Minimum change in the monitored quantity to qualify as an improvement.
                             Default: 0
-            path (str): Path for the checkpoint to be saved to.
-                            Default: 'checkpoint.pt'
-  
         """
         self.patience = patience
         self.verbose = verbose
@@ -86,36 +84,30 @@ class EarlyStopping:
         self.delta = delta
 
     def __call__(self, val_loss, model, path, f_macro = None, f_weighted = None, log=None):
-
         score = -val_loss
 
         if self.best_score is None:
             self.best_score = score
-            self.save_checkpoint(val_loss, model, path ,f_macro, f_weighted)
+            #self.save_checkpoint(val_loss, model, path ,f_macro, f_weighted)
 
         elif score < self.best_score + self.delta:
             self.counter += 1
 
-            print(f'EarlyStopping counter: {self.counter} out of {self.patience}')
+            #print(f'EarlyStopping counter: {self.counter} out of {self.patience}')
 
             if self.counter >= self.patience:
                 self.early_stop = True
         else:
-            print("new best score!!!!")
+            #print("new best score!!!!")
             #print("log shi ", log)
-            if log is not None:
-                log.write("new best score!!!! Saving model ... \n")
-                log.write("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ \n")
+            #if log is not None:
+                #log.write("new best score!!!! Saving model ... \n")
+                #log.write("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ \n")
             self.best_score = score
-            self.save_checkpoint(val_loss, model,path,f_macro, f_weighted)
+            #self.save_checkpoint(val_loss, model,path,f_macro, f_weighted)
             self.counter = 0
-    def save_checkpoint(self, val_loss, model, path, f_macro = None, f_weighted = None):
-        '''Saves model when validation loss decrease.'''
-        if self.verbose:
-            print(f'Validation loss decreased ({self.val_loss_min:.6f} --> {val_loss:.6f}).  Saving model ...')
-        torch.save(model.state_dict(), path+'/'+'best_vali.pth')
-        self.val_loss_min = val_loss
-
+        return self.early_stop
+    
 
 class adjust_learning_rate_class:
     def __init__(self, args, verbose):
@@ -152,3 +144,13 @@ class adjust_learning_rate_class:
                 if self.verbose:
                     print('Updating learning rate to {}'.format(self.learning_rate))
             self.counter = 0
+    def state_dict(self):
+        return {'patience':self.patience, 'factor':self.factor, 'learning_rate':self.learning_rate,
+                'verbose':self.verbose, 'counter':self.counter, 'best_score':self.best_score}
+    def load_state_dict(self, dict):
+        self.patience = dict['patience']
+        self.factor = dict['factor']
+        self.learning_rate = dict['learning_rate']
+        self.verbose = dict['verbose']
+        self.counter = dict['counter']
+        self.best_score = dict['best_score']
