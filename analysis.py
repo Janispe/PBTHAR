@@ -9,6 +9,9 @@ from dataloaders import data_dict
 from models.model_builder import model_builder
 
 from pbtexperiment import _get_data, validation
+from utils import MixUpLoss
+
+import torch.nn as nn
 
 def build_model(args, device, checkpoint_dict):
     model = model_builder(args)
@@ -25,7 +28,11 @@ def cal_test_accuracy(args, device, checkpoint_dict):
     dataset.update_train_val_test_keys()
     
     test_dataloader = _get_data(args, dataset, flag = 'test', weighted_sampler = args.weighted_sampler )
-    return validation(args, model, test_dataloader, device)
+    
+    criterion = nn.CrossEntropyLoss(reduction="mean").to(device)
+    criterion = MixUpLoss(criterion)
+    
+    return validation(args, model, test_dataloader, criterion, device)
 
 def plot_hp_history(results, parameter):
     fig, ax = plt.subplots()
