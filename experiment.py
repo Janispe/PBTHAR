@@ -118,7 +118,7 @@ class Exp(object):
             if self.args.mixup_probability < 1 or self.args.random_augmentation_prob<1:
                 random_aug =RandomAugment(self.args.random_augmentation_nr, self.args.random_augmentation_config, self.args.max_aug )
                 def collate_fn(batch):                
-                    if (self.args.random_aug_first):
+                    if (self.args.random_aug_first >= np.random.uniform(0,1,1)[0]):
                         batch_x1 = []
                         batch_x2 = []
                         batch_y  = []

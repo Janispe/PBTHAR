@@ -24,7 +24,7 @@ def train(args):
         hyperparam_mutations={
             "random_augmentation_prob": list(np.arange(0,1.1,0.1)),
             "mixup_probability": list(np.arange(0,1.1,0.1)),
-            #"random_aug_first" : [True, False]
+            #"random_aug_first" : list(np.arange(0,1.1,0.1))
         },
         synch=args.synch,
         )
@@ -39,7 +39,7 @@ def train(args):
         hyperparam_bounds={
             "random_augmentation_prob": [0.1,0.9],
             #"mixup_probability": [0.1,0.9],
-            #"random_aug_first":[True, False]
+            #"random_aug_first":[0,1]
         },
         synch=args.synch
         )
@@ -84,8 +84,7 @@ def train(args):
             param_space={
                 "random_augmentation_prob": tune.choice(list(np.arange(0,1.1,0.1))),
                 "mixup_probability": tune.choice(list(np.arange(0,1.1,0.1))),
-                "random_aug_first": tune.choice([True, False]),
-                #"random_aug_first": True,
+                "random_aug_first": tune.choice(list(np.arange(0,1.1,0.1))),
                 "checkpoint_interval": args.perturbation_interval,
             },
         )

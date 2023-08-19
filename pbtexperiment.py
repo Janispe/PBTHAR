@@ -53,7 +53,7 @@ def _get_data(args, data, flag="train", weighted_sampler = False):
         if args.mixup_probability < 1 or args.random_augmentation_prob<1:
             random_aug =RandomAugment(args.random_augmentation_nr, args.random_augmentation_config, args.max_aug )
             def collate_fn(batch):                
-                if (args.random_aug_first):
+                if (args.random_aug_first >= np.random.uniform(0,1,1)[0]):
                     batch_x1 = []
                     batch_x2 = []
                     batch_y  = []
