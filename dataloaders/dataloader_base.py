@@ -190,7 +190,11 @@ class BASE_DATA():
             # Normalization the data
             if self.datanorm_type is not None:
                 train_vali_x = pd.DataFrame()
-                for sub in (self.train_keys+self.vali_keys):
+                if self.exp_mode == "LOCV":
+                    keys = self.train_keys
+                else:
+                    keys = self.train_keys+self.vali_keys
+                for sub in (keys):
                     temp = self.data_x[self.data_x[self.split_tag]==sub]
                     train_vali_x = pd.concat([train_vali_x,temp])
 
@@ -227,7 +231,7 @@ class BASE_DATA():
             all_train_keys = []
                         
             if self.split_tag == "sub":
-                for sub in self.vali_keys:
+                for sub in self.train_keys:
                     all_train_keys.extend(self.sub_ids_of_each_sub[sub])
             else:
                 all_train_keys = self.train_keys.copy()
