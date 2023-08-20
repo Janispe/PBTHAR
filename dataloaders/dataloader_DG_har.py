@@ -79,7 +79,7 @@ class Daphnet_HAR_DATA(BASE_DATA):
         self.drop_activities = [0]
 
         self.train_keys   = ["1_1", "1_2", # 'S01R01.txt', 'S01R02.txt',
-                             "2_2", #'S02R02.txt', 
+                             #"2_2", #'S02R02.txt', 
                              "3_1", "3_2", # 'S03R01.txt', 'S03R02.txt',
                              "3_3", # 'S03R03.txt', 
                              "4_1", # 'S04R01.txt',
