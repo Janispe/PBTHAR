@@ -5,6 +5,7 @@ from dataloaders import data_dict
 from ray import tune, air
 from ray.tune.schedulers import PopulationBasedTraining
 from ray.tune.schedulers.pb2 import PB2
+from ray.tune.stopper import ExperimentPlateauStopper, MaximumIterationStopper, CombinedStopper
 
 from PBTTrainable import RayModel
 
@@ -24,7 +25,7 @@ def train(args):
         hyperparam_mutations={
             "random_augmentation_prob": list(np.arange(0,1.1,0.1)),
             "mixup_probability": list(np.arange(0,1.1,0.1)),
-            #"random_aug_first" : list(np.arange(0,1.1,0.1))
+            "random_aug_first" : list(np.arange(0,1.1,0.1))
         },
         synch=args.synch,
         )
@@ -37,9 +38,9 @@ def train(args):
         quantile_fraction=args.quantile_fraction,
         perturbation_interval=args.perturbation_interval,
         hyperparam_bounds={
-            "random_augmentation_prob": [0.1,0.9],
-            #"mixup_probability": [0.1,0.9],
-            #"random_aug_first":[0,1]
+            "random_augmentation_prob": [0,1],
+            "mixup_probability": [0,1],
+            "random_aug_first":[0,1]
         },
         synch=args.synch
         )
@@ -59,6 +60,13 @@ def train(args):
     trainable = tune.with_parameters(trainable, dataset=dataset, args=args)
     trainable_with_resources = tune.with_resources(trainable, {"gpu": args.gpu_per_trial, "cpu": args.cpu_per_trial})
 
+    if args.early_stopping:
+        stop=CombinedStopper(MaximumIterationStopper(args.training_iterations),
+                              ExperimentPlateauStopper('total_loss', mode="min", patience=args.early_stop_patience,
+                                                       top=2))
+    else:
+        stop={"training_iteration": args.training_iterations}
+
     if args.restore:
         tuner = tune.Tuner.restore(args.storage_path)
     else:
@@ -67,7 +75,7 @@ def train(args):
             run_config=air.RunConfig(
                 log_to_file=True,
                 name=args.experiment_name,
-                stop={"training_iteration": args.training_iterations},
+                stop=stop,
                 verbose=1,
                 checkpoint_config=air.CheckpointConfig(
                     checkpoint_score_attribute="mean_accuracy",
