@@ -1,17 +1,18 @@
 #!/bin/bash
 export PYTHONPATH="/usr/bin/python3"
 
-python main.py --storage-path "/home/janis/PopulationBasedTraining/RayTuneResults/hapt/pbt" --data-name hapt --trials 16 \
-            --gpu-per-trial 0.2 --trainable-api class --training-iterations 50 --reuse-actor True \
-            --pertubation-interval 5 --experiment-name "00" --synch True --use-vali-keys True
+python main.py --storage-path "/home/janis/PopulationBasedTraining/RayTuneResults/hapt/pbt" --data-name hapt --trials 5 \
+            --gpu-per-trial 0.2 --trainable-api function --training-iterations 500 --reuse-actor True \
+            --pertubation-interval 4 --experiment-name "00" --synch True --use-vali-keys True \
+            --early-stopping True --early-stop-patience 5
 
 python main.py --storage-path "/home/janis/PopulationBasedTraining/RayTuneResults/hapt/pbt" --data-name hapt --trials 16 \
-            --gpu-per-trial 0.2 --trainable-api class --training-iterations 100 --reuse-actor False \
-            --pertubation-interval 5 --experiment-name "01" --synch True --use-vali-keys True
+            --gpu-per-trial 0.2 --trainable-api function --training-iterations 75 --reuse-actor False \
+            --pertubation-interval 4 --experiment-name "01" --synch True --use-vali-keys True
 
 python main.py --storage-path "/home/janis/PopulationBasedTraining/RayTuneResults/hapt/pbt" --data-name hapt --trials 16 \
-            --gpu-per-trial 0.2 --trainable-api class --training-iterations 100 --reuse-actor True \
-            --pertubation-interval 5 --experiment-name "02" --synch True --use-vali-keys True
+            --gpu-per-trial 0.2 --trainable-api class --training-iterations 75 --reuse-actor True \
+            --pertubation-interval 4 --experiment-name "02" --synch True --use-vali-keys True
 
 python main.py --storage-path "/home/janis/PopulationBasedTraining/RayTuneResults/hapt/pbt" --data-name hapt --trials 16 \
             --gpu-per-trial 0.2 --trainable-api function --training-iterations 100 \
@@ -19,11 +20,11 @@ python main.py --storage-path "/home/janis/PopulationBasedTraining/RayTuneResult
 
 python main.py --storage-path "/home/janis/PopulationBasedTraining/RayTuneResults/hapt/pbt" --data-name hapt --trials 16 \
             --gpu-per-trial 0.2 --trainable-api function --training-iterations 100 \
-            --pertubation-interval 4 --experiment-name "04" --synch True --use-vali-keys True
+            --pertubation-interval 5 --experiment-name "04" --synch True --use-vali-keys True
 
 python main.py --storage-path "/home/janis/PopulationBasedTraining/RayTuneResults/hapt/pbt" --data-name hapt --trials 16 \
             --gpu-per-trial 0.2 --trainable-api function --training-iterations 100 \
-            --pertubation-interval 3 --experiment-name "05" --synch True --use-vali-keys True
+            --pertubation-interval 5 --experiment-name "05" --synch True --use-vali-keys True
 
 python main.py --storage-path "/home/janis/PopulationBasedTraining/RayTuneResults/hapt/pbt" --data-name hapt --trials 8 \
             --gpu-per-trial 0.2 --trainable-api function --training-iterations 100 \
@@ -62,7 +63,7 @@ python main.py --storage-path "/home/janis/PopulationBasedTraining/RayTuneResult
             --pertubation-interval 4 --experiment-name "13" --synch True --use-vali-keys True
 
 python main.py --storage-path "/home/janis/PopulationBasedTraining/RayTuneResults/hapt/pbt" --data-name oppo --trials 16 \
-            --gpu-per-trial 0.2 --trainable-api function --training-iterations 100 \
+            --gpu-per-trial 0.2 --trainable-api class --training-iterations 100 \
             --pertubation-interval 5 --experiment-name "14" --synch True --use-vali-keys True
 
 python main.py --storage-path "/home/janis/PopulationBasedTraining/RayTuneResults/hapt/pbt" --data-name oppo --trials 16 \
