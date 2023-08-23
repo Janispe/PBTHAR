@@ -9,11 +9,21 @@ from utils import adjust_learning_rate_class
 from models.model_builder import model_builder
 
 from experiment import MixUpLoss
+import numpy as np
 
+import random
 
 class RayModel(Trainable):
     
     def setup(self, config: dict, dataset, args):
+        
+        torch.manual_seed(config['seed'])
+        torch.cuda.manual_seed(config['seed'])
+        torch.cuda.manual_seed_all(config['seed'])
+        torch.backends.cudnn.deterministic = True 
+        np.random.seed(config['seed'])
+        random.seed(config['seed'])
+        
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.args = args
         

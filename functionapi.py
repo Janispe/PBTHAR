@@ -9,16 +9,20 @@ import torch.nn as nn
 from utils import MixUpLoss, adjust_learning_rate_class
 from ray.air import session, Checkpoint
 
+import numpy as np
+import random
+
 
 def train_net(config, dataset, args):
+    
+    torch.manual_seed(config['seed'])
+    torch.cuda.manual_seed(config['seed'])
+    torch.cuda.manual_seed_all(config['seed'])
+    torch.backends.cudnn.deterministic = True 
+    np.random.seed(config['seed'])
+    random.seed(config['seed'])
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-
-    #torch.manual_seed(args.seed)
-    #torch.cuda.manual_seed(args.seed)
-    #torch.cuda.manual_seed_all(args.seed)
-    #torch.backends.cudnn.deterministic = True 
-    #np.random.seed(args.seed)
 
     args.random_augmentation_prob = config["random_augmentation_prob"]
     args.mixup_probability = config["mixup_probability"]

@@ -16,6 +16,8 @@ def create_parser():
     parser.add_argument('--quantile-fraction', dest='quantile_fraction', type=float, default=0.25, help='Bottom Trials to be exploitet')
     parser.add_argument('--trainable-api', dest='trainable_api', default='function')
     parser.add_argument('--reuse-actor', dest='reuse_actor', type=bool, default=False)
+    parser.add_argument('--custom-start-values', dest='custom_start_values', default=None, type=int)
+    parser.add_argument('--seed', dest='seed', default=0, type=int)
     
     #only pbt
     parser.add_argument('--resample-probability', dest='resample_probability', type=float, default=0.2, help='Propability of resampling hyperparameters instead mutating them')

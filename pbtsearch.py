@@ -11,7 +11,13 @@ from PBTTrainable import RayModel
 
 import numpy as np
 
+import random
+
 def train(args):
+    
+    random.seed(args.seed)
+    np.random.seed(args.seed)
+    
     if args.scheduler == "pbt":
         #Population based training
         scheduler = PopulationBasedTraining(
@@ -67,6 +73,23 @@ def train(args):
     else:
         stop={"training_iteration": args.training_iterations}
 
+    if args.custom_start_values is not None:
+        param_space = {
+                "random_augmentation_prob": args.custom_start_values,
+                "mixup_probability": args.custom_start_values,
+                "random_aug_first": args.custom_start_values,
+                "checkpoint_interval": args.custom_start_values,
+                "seed": tune.randint(0, 10000),
+        }
+    else:
+        param_space = {
+                "random_augmentation_prob": tune.choice(list(np.arange(0,1.1,0.1))),
+                "mixup_probability": tune.choice(list(np.arange(0,1.1,0.1))),
+                "random_aug_first": tune.choice(list(np.arange(0,1.1,0.1))),
+                "checkpoint_interval": args.perturbation_interval,
+                "seed": tune.randint(0, 10000),
+            }
+
     if args.restore:
         tuner = tune.Tuner.restore(args.storage_path)
     else:
@@ -89,12 +112,7 @@ def train(args):
                 reuse_actors=args.reuse_actor,
                 chdir_to_trial_dir=False,
             ),
-            param_space={
-                "random_augmentation_prob": tune.choice(list(np.arange(0,1.1,0.1))),
-                "mixup_probability": tune.choice(list(np.arange(0,1.1,0.1))),
-                "random_aug_first": tune.choice(list(np.arange(0,1.1,0.1))),
-                "checkpoint_interval": args.perturbation_interval,
-            },
+            param_space=param_space,
         )
     
 
