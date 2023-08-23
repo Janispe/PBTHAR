@@ -57,7 +57,13 @@ def get_average_frame(results_grid, parameter):
     df = pd.concat(dataframes)
     avg_df = df.groupby("training_iteration")
     return avg_df.mean()
-
+   
+def get_best_frame(results_grid):
+    max_data_frame = results_grid[0].metrics_dataframe
+    for r in results_grid:
+        max_data_frame = max_data_frame.where(max_data_frame['mean_accuracy'] > r.metrics_dataframe['mean_accuracy'], r.metrics_dataframe)
+    return max_data_frame 
+    
 PbtUpdate = collections.namedtuple('PbtUpdate', [
     'target_trial_name', 'clone_trial_name', 'target_trial_epochs',
     'clone_trial_epochs', 'old_config', 'new_config'
