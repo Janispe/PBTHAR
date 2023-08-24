@@ -89,19 +89,19 @@ f.write(text)
 f.close()
 
 
-for r in results_grid:
-    checkpoint = r.checkpoint
-    if args.trainable_api=='function':
-        dict = checkpoint.to_dict()
-    elif args.trainable_api=='class':
-        dict = torch.load(checkpoint._local_path+'/model.pht')
-    else:
-        raise AttributeError()
+# for r in results_grid:
+#     checkpoint = r.checkpoint
+#     if args.trainable_api=='function':
+#         dict = checkpoint.to_dict()
+#     elif args.trainable_api=='class':
+#         dict = torch.load(checkpoint._local_path+'/model.pht')
+#     else:
+#         raise AttributeError()
 
-    total_loss,  acc, f_w,  f_macro, f_micro = cal_test_accuracy(args, device, dict)
-    text = 'Trial Test Performance: Total_Loss {} Acc {}  F_w {} F_Macro {} F_Micro {}'.format(total_loss,  acc, f_w,  f_macro, f_micro)
+#     total_loss,  acc, f_w,  f_macro, f_micro = cal_test_accuracy(args, device, dict)
+#     text = 'Trial Test Performance: Total_Loss {} Acc {}  F_w {} F_Macro {} F_Micro {}'.format(total_loss,  acc, f_w,  f_macro, f_micro)
     
-    path = r._local_path + '/trial_final_test_results.txt'
-    f = open(path, "w")
-    f.write(text)
-    f.close()
+#     path = r._local_path + '/trial_final_test_results.txt'
+#     f = open(path, "w")
+#     f.write(text)
+#     f.close()
