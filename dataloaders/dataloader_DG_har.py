@@ -80,18 +80,18 @@ class Daphnet_HAR_DATA(BASE_DATA):
 
         self.train_keys   = ["1_1", "1_2", # 'S01R01.txt', 'S01R02.txt',
                              #"2_2", #'S02R02.txt', 
-                             "3_1", "3_2", # 'S03R01.txt', 'S03R02.txt',
+                            #"3_1", "3_2", # 'S03R01.txt', 'S03R02.txt',
                              "3_3", # 'S03R03.txt', 
                              "4_1", # 'S04R01.txt',
                              "5_1", #'S05R01.txt' ]
                              "5_2",  #'S05R02.txt'
-                             "6_1", "6_2", # 'S06R01.txt', 'S06R02.txt',
+                             #"6_1", "6_2", # 'S06R01.txt', 'S06R02.txt',
                              "7_1", "7_2", # 'S07R01.txt', 'S07R02.txt',
-                             "8_1", #'S08R01.txt', 
+                             #"8_1", #'S08R01.txt', 
    #                          "9_1", # 'S09R01.txt', 
                              "10_1" ] #'S10R01.txt' 
 
-        self.vali_keys    =["9_1"]
+        self.vali_keys    =["9_1", "3_1", "3_2", "6_1", "6_2", "8_1"]
 
         self.test_keys    = ["2_1", # 'S02R01.txt',
                              "2_2"] #'S02R02.txt', 
