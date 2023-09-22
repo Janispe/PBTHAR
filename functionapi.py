@@ -56,6 +56,14 @@ def train_net(config, dataset, args):
         last_step = checkpoint_dict["step"]
         step = last_step + 1
 
+        #seed loading
+
+        torch.set_rng_state(checkpoint_dict["torch_seed_state"])
+        torch.cuda.set_rng_state(checkpoint_dict["torch_cuda_seed_state"])
+        torch.cuda.set_rng_state_all(checkpoint_dict["torch_cuda_all_seed_state"])
+        np.random.set_state(checkpoint_dict["numpy_seed_state"])
+        random.setstate(checkpoint_dict["random_seed_state"])
+
     while True:
         trainstep(model, optimizer, train_loader, criterion, device)
         total_loss,  acc, f_w,  f_macro, f_micro = validation(args, model, vali_loader, criterion, device)
@@ -69,6 +77,11 @@ def train_net(config, dataset, args):
                 "model_state_dict": model.state_dict(),
                 "optimizer_state_dict": optimizer.state_dict(),
                 'learning_reate_adapter_state_diict': learning_rate_adapter.state_dict(),
+                "torch_seed_state": torch.get_rng_state(),
+                "torch_cuda_seed_state" : torch.cuda.get_rng_state(),
+                "torch_cuda_all_seed_state": torch.cuda.get_rng_state_all(),
+                "numpy_seed_state": np.random.get_state(),
+                "random_seed_state": random.getstate(),            
             })
 
         session.report(
