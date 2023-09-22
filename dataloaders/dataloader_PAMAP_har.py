@@ -121,8 +121,8 @@ class PAMAP2_HAR_DATA(BASE_DATA):
 
         # 'subject101.dat', 'subject102.dat', 'subject103.dat',  'subject104.dat', 
         # 'subject105.dat', 'subject107.dat', 'subject108.dat', 'subject109.dat'
-        self.train_keys   = [1,2,3,4,5,7,8,9]
-        self.vali_keys    = []
+        self.train_keys   = [1,2,4,8]
+        self.vali_keys    = [3,5,7,9]
         # 'subject106.dat'
         self.test_keys    = [6]
 
