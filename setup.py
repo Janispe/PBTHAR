@@ -19,6 +19,8 @@ def create_parser():
     parser.add_argument('--custom-start-values', dest='custom_start_values', default=None, type=int)
     parser.add_argument('--seed', dest='seed', default=0, type=int)
     
+    parser.add_argument('--policy-file', dest='policy_file')
+
     #only pbt
     parser.add_argument('--resample-probability', dest='resample_probability', type=float, default=0.2, help='Propability of resampling hyperparameters instead mutating them')
     parser.add_argument('--burn-in-period', dest='burn_in_period', type=int, default=0, help='Iterations without elpoition and exploration, used to trai models first')
