@@ -1,5 +1,3 @@
-
-
 import torch
 from pbtexperiment import _get_data, trainstep, validation
 from models.model_builder import model_builder
@@ -14,7 +12,11 @@ import random
 
 
 def train_net(config, dataset, args):
-    
+    # used for replay
+    if ('seed' not in config):
+        print("use seed from args: " + str(args.seed))
+        config['seed'] = args.seed
+
     torch.manual_seed(config['seed'])
     torch.cuda.manual_seed(config['seed'])
     torch.cuda.manual_seed_all(config['seed'])
@@ -57,7 +59,6 @@ def train_net(config, dataset, args):
         step = last_step + 1
 
         #seed loading
-
         torch.set_rng_state(checkpoint_dict["torch_seed_state"])
         torch.cuda.set_rng_state(checkpoint_dict["torch_cuda_seed_state"])
         torch.cuda.set_rng_state_all(checkpoint_dict["torch_cuda_all_seed_state"])
@@ -85,7 +86,7 @@ def train_net(config, dataset, args):
             })
 
         session.report(
-            {"mean_accuracy": acc, "total_loss": total_loss, "random_augmentation_prob": config["random_augmentation_prob"]
+            {"mean_accuracy": acc, "total_loss": total_loss, "f_w": f_w, "f_macro": f_macro, "random_augmentation_prob": config["random_augmentation_prob"]
             ,"mixup_probability":config["mixup_probability"], "random_aug_first":config["random_aug_first"]},
             checkpoint=checkpoint
         )

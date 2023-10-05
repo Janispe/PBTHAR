@@ -19,10 +19,25 @@ from pbtsearch import train
 from analysis import cal_test_accuracy
 
 from EarlyStopper import EarlyStopper
+import re
 
 
+def remove_seed_from_config(policy_file):
+    with open(policy_file, 'r') as datei:
+        inhalt = datei.read()
+
+    # Muster für 'seed=' und darauf folgende Zahlen erstellen und ersetzen
+    muster = re.compile(r',seed=\d+')
+    muster2 = re.compile(r', "seed": \d+')
+    inhalt = muster.sub('', inhalt)
+    inhalt = muster2.sub('', inhalt)
+
+    # Bearbeiteten Inhalt in die Datei zurückschreiben
+    with open(policy_file, 'w') as datei:
+        datei.write(inhalt)
 
 def replay_run(args):
+    remove_seed_from_config(args.policy_file)
     replay = PopulationBasedTrainingReplay(args.policy_file)
 
     dataset = data_dict[args.data_name](args)

@@ -35,9 +35,6 @@ def create_parser():
     parser.add_argument('--datanorm-type', dest='datanorm_type', default='standardization')
     
     parser.add_argument('--batch-size', dest='batch_size', type=int, default=256)
-    #shuffle ? 
-    #drop last ?
-    #train_vali_quote ? 
     
     parser.add_argument('--learning-rate', dest='learning_rate', type=float, default=0.001)
     parser.add_argument('--learning-rate-patience', dest='learning_rate_patience', type=int, default=5)
@@ -53,8 +50,6 @@ def create_parser():
     parser.add_argument('--use-vali-keys', dest='use_vali_keys', type=bool, default =False)
     
     parser.add_argument('--wavelet-filtering', dest='wavelet_filtering', type=bool, default=False)
-    #wavelet_filtering_regularization ? 
-    #wavelet_filetring_finetuning ? 
     
     parser.add_argument('--difference', dest='difference', type=bool, default=False)
     parser.add_argument('--filtering', dest='filtering', type=bool, default=False)
@@ -65,20 +60,17 @@ def create_parser():
     parser.add_argument('--sensor-select', dest='sensor_select', default=None)
     
     parser.add_argument('--representation-type', dest='representation_type', default='time')
-    #exp_mode ?
     
     parser.add_argument('--filter-scaling-factor', dest='filter_scaling_factor', type=float, default=0.25)
     parser.add_argument('--model-type', dest='model_type', default='deepconvlstm')
     parser.add_argument('--model-config', dest='model_config', default='configs/model.yaml')
     
-    #random_aug_first
     parser.add_argument('--mixup-alpha', dest='mixup_alpha', type=float, default=0.5)
     parser.add_argument('--mixup-argmax', dest='mixup_argmax', type=bool, default=True)
     
     parser.add_argument('--max-aug', dest='max_aug', type=int, default=3)
     
-    
-    #needed ?
+
     parser.add_argument('--load-all', dest='load_all', default=None)
     parser.add_argument('--train-vali-quote', dest='train_vali_quote', type=float, default=0.9)
     parser.add_argument('--wavelet-function', dest='wavelet_function', default= None, type=str, help='Method to generate spectrogram')

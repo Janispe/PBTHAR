@@ -1,43 +1,20 @@
 import torch
-import torch.nn as nn
-import torch.nn.functional as F
 from torch.utils.data import DataLoader
-from torch import optim
-import os
 import numpy as np
-import time
-from dataloaders import data_dict,data_set
+from dataloaders import data_set
 from sklearn.metrics import confusion_matrix
-import yaml
-import pandas as pd
 
-from experiment import MixUpLoss
-
-from models.model_builder import model_builder
 
 from torch.utils.data.sampler import WeightedRandomSampler
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import f1_score
 
-from datetime import datetime
 import matplotlib.pyplot as plt
 import seaborn as sns
 from dataloaders.augmentation import RandomAugment, mixup_data
-import random
-import os
 
 import matplotlib.pyplot as plt
-from matplotlib.animation import FuncAnimation, PillowWriter
 
-
-from ray.air import session, Checkpoint
-
-import ray
-from ray import tune, air
-from ray.tune.schedulers import PopulationBasedTraining
-from ray.tune.schedulers.pb2 import PB2
-
-from utils import adjust_learning_rate_class
 
 
 def _get_data(args, data, flag="train", weighted_sampler = False):
